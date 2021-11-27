@@ -1,2 +1,0 @@
-# auto-insta
-Begin app
