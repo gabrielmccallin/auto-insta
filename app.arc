@@ -3,6 +3,8 @@ deno-hello
 
 @http
 get /
+get /fast
+post /photo
 
 @tables
 data
