@@ -1,30 +1,34 @@
-import * as data from 'https://registry.begin.com/begin-data@master/mod.ts'
+import * as data from "https://registry.begin.com/begin-data@master/mod.ts";
+import { authenticate } from "../../lib/authenticate.ts";
+import {
+  recordSaved,
+} from "../../lib/responses.ts";
+import { request } from "../../lib/request.ts";
+import { validatePayload } from "../../lib/payload.ts";
 
-export async function handler(req: { body: string; }) {
-  let photo: { created: number; }
-  try {
-    photo = JSON.parse(req.body);
-  } catch {
-    return {
-      statusCode: 400,
-      headers: {
-        'content-type': 'application/json; charset=utf8',
-        'cache-control': 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0'
-      },
-      body: "😢 Bad request"
-    }
-  }
-  photo.created = photo.created || Date.now()
+type payload = {
+  created: number;
+  key: string;
+  title: string;
+  location: string;
+  photo: string;
+  description: string;
+};
+
+export const handler = async (req: request) => {
+  return await authenticate(req, () => validatePayload(req.body, saveRecord));
+};
+
+const saveRecord = async (payload: payload) => {
+  const { title, location, photo, description } = payload;
   await data.set({
-    table: 'photos',
-    ...photo
-  })
-  return {
-    statusCode: 200,
-    headers: {
-      'content-type': 'application/json; charset=utf8',
-      'cache-control': 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0'
-    },
-    body: "✊ Photo saved"
-  }
-}
+    table: "photos",
+    title,
+    location,
+    photo,
+    description,
+    created: Date.now(),
+  });
+
+  return recordSaved;
+};

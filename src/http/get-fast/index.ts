@@ -1,10 +1,14 @@
-export async function handler (req: object) {
+import { request } from "../../lib/request.ts";
+import { authenticate } from "../../lib/authenticate.ts";
+import { successWithBody } from "../../lib/responses.ts";
+
+export const handler = async (req: request) => {
+  return await authenticate(req, () => someotherstuff("this fast"));
+};
+
+const someotherstuff = (param: string) => {
   return {
-    statusCode: 200,
-    headers: {
-      'content-type': 'text/html; charset=utf8',
-      'cache-control': 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0'
-    },
-    body: "HI!"
-  }
-}
+    ...successWithBody,
+    body: param,
+  };
+};

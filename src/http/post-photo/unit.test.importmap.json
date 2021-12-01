@@ -1,0 +1,5 @@
+{
+    "imports": {
+        "https://registry.begin.com/begin-data@master/mod.ts": "./mocks/data.ts"
+    }
+}
