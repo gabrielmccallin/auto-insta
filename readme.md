@@ -1,20 +1,24 @@
-<img src="https://static.begin.app/deno-hello-world/readme-banner.png" width="813">
+# Begin with Deno
+Local development with Begin using `@architect/sandbox`
 
-[![Begin build status](https://buildstatus.begin.app/dream-nxb/status.svg)](https://begin.com)
+## Running locally
+- Initialise with `npm i`
+- Start dev server with `npm start`
 
+This will start `@architect/sandbox` and allow you to make http requests to the local development server, mimicking the behaviour of the hosted Begin services. 
 
-## Deploy your own
+Server starts by default at port 3333.
 
-[![Deploy to Begin](https://static.begin.com/deploy-to-begin.svg)](https://begin.com/apps/create?template=https://github.com/begin-examples/deno-hello-world)
+## Tests
+One of the tests mocks out the database call (which is an in memory DynamoDB when running with `@architect/sandbox`). 
 
-Deploy your own clone of this app to Begin!
+An import map mocks the Begin data package, see: `src/http/post-photo/unit.test.importmap.json`
 
+This command will run all the tests in `src` and load the import map.
 
-## Getting started
-
-- Initialize your deps: `npm install`
-- Start the local dev server: `npm start`
-
+```
+deno test --import-map=src/http/post-photo/unit.test.importmap.json src 
+```
 
 ## Reference
 - [Quickstart](https://docs.begin.com/en/guides/quickstart/) - basics on working locally, project structure, deploying, and accessing your Begin app
