@@ -4,8 +4,6 @@ import { handler } from "./index.ts";
 import { baseRequest } from "../../lib/request.ts";
 import { headers, recordSaved } from "../../lib/responses.ts";
 import { key } from "../../lib/authenticate.ts";
-// import { Stub, stub } from "https://deno.land/x/mock@v0.10.0/stub.ts";
-// import * as data from "https://registry.begin.com/begin-data@master/mod.ts";
 
 // Simple name and function, compact form, but not configurable
 Deno.test("should fail authentication", async () => {
