@@ -5,9 +5,7 @@ export const validatePayload = async (
   // deno-lint-ignore no-explicit-any
   next: (payload: any) => any
 ) => {
-  console.log("******************");
   let parsedPayload;
-  console.log(JSON.parse(payload));
   try {
     parsedPayload = JSON.parse(payload);
   } catch {
