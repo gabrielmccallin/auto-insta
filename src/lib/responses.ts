@@ -3,16 +3,32 @@ export const headers = {
   "cache-control": "no-cache, no-store, must-revalidate, max-age=0, s-maxage=0",
 };
 
-const success = {
+
+export const success = {
   statusCode: 200,
-  headers
+  headers,
 };
 
 export const unauthorized = {
   statusCode: 401,
   headers,
-  body: "🚫 No baby!",
+  body:{
+    message: "🚫 No baby!"
+  }
 };
+
+export const uploadFailed = {
+  statusCode: 503,
+  headers,
+  body: JSON.stringify({
+    message: "Upload photo failed",
+  }),
+};
+
+export const forbidden = new Response("🚫 Forbidden!", {
+  status: 403,
+  headers,
+});
 
 export const badRequest = {
   statusCode: 400,
@@ -25,7 +41,25 @@ export const recordSaved = {
   body: "✊ Photo saved",
 };
 
-export const successWithBody = {
-  body: "HI!",
-  ...success
+export const recordSaveFailed = {
+  statusCode: 503,
+  headers,
+  body: JSON.stringify({
+    message: "Save record failed",
+  }),
+};
+
+// export const successWithBody = {
+//   body: "HI!",
+//   ...success
+// }
+
+export enum responseTypes {
+  "unauthorized",
+  "badRequest",
+  "success",
+  "validPayload",
+  "invalidPayload",
+  "uploadPhotoFailed",
+  "dataSaveFailed"
 }

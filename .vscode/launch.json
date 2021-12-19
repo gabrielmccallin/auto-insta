@@ -5,17 +5,108 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "address": "ws://127.0.0.1:9229/ws/c335164c-f23a-4987-ae79-8caf1fc8f601",
+            "localRoot": "${workspaceFolder}",
+            "name": "Attach to Remote",
+            "port": 9229,
+            "remoteRoot": "Absolute path to the remote directory containing the program",
+            "request": "attach",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Deno run", // manually created
+            "type": "pwa-node",
+            "request": "launch",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "deno",
+            "runtimeArgs": [
+                "run",
+                "--inspect-brk",
+                "-A"
+            ],
+            "attachSimplePort": 9229,
+            // "console": "integratedTerminal"
+        },
+        {
+            "name": "Deno (test with import maps)",
+            "type": "pwa-node",
+            "request": "launch",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}/src",
+            "runtimeExecutable": "deno",
+            "runtimeArgs": [
+                "test",
+                "--inspect-brk",
+                "-A",
+                "--import-map",
+                "importmap.json"
+            ],
+            "attachSimplePort": 9229,
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Deno (test)", // manually created
+            "type": "pwa-node",
+            "request": "launch",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "deno",
+            "runtimeArgs": [
+                "test",
+                "--inspect-brk",
+                "-A"
+            ],
+            "attachSimplePort": 9229,
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Launch via NPM",
             "request": "launch",
             "runtimeArgs": [
                 "run-script",
-                "debug"
+                "debug",
+                "--inspect-brk"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "type": "pwa-node"
-        }
+            "type": "node",
+            // "stopOnEntry": true,
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "program": "./src/server.ts",
+            "name": "Deno Run",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "deno",
+            "runtimeArgs": [
+                "run",
+                "--inspect",
+                "-A"
+            ],
+            "attachSimplePort": 9229,
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Deno",
+            "runtimeExecutable": "deno",
+            "program": "${file}",
+            "runtimeArgs": [
+                "test",
+                "--inspect-brk",
+                "--allow-net",
+                "--allow-env",
+                "--watch"
+            ],
+            "port": 9229,
+        },
     ]
 }

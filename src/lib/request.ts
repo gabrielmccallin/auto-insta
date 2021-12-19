@@ -1,4 +1,4 @@
-export type request = {
+export type beginRequest = {
   version: string;
   routeKey: string;
   rawPath: string;

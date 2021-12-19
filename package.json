@@ -1,10 +1,10 @@
 {
-  "name": "begin-app",
-  "version": "0.0.0",
-  "description": "Begin deno CRUD example app",
+  "name": "auto-insta",
+  "version": "0.0.1",
+  "description": "save record, upload to insta",
   "scripts": {
     "start": "npx sandbox",
-    "debug": "npx sandbox -d"
+    "test": "sh test.sh"
   },
   "dependencies": {
     "@architect/sandbox": "^4.1.1"

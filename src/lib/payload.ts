@@ -1,16 +1,20 @@
-import { badRequest } from "./responses.ts";
+import { responseTypes } from "./responses.ts";
 
-export const validatePayload = async (
-  payload: string,
-  // deno-lint-ignore no-explicit-any
-  next: (payload: any) => any
-) => {
-  let parsedPayload;
+export const expectedKeys = ["title", "location", "photo", "description"];
+
+export const validatePayload = async (payload: string) => {
+  let parsed;
   try {
-    parsedPayload = JSON.parse(payload);
+    parsed = await JSON.parse(payload);
   } catch {
-    return badRequest;
+    return responseTypes.invalidPayload;
   }
 
-  return await next(parsedPayload);
+  const keys = Object.keys(parsed);
+  const checker = (arr: string[], target: string[]) =>
+    target.every((item) => arr.includes(item));
+
+  return checker(keys, expectedKeys)
+    ? responseTypes.validPayload
+    : responseTypes.invalidPayload;
 };

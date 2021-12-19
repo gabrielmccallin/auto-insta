@@ -2,13 +2,18 @@ import { assertEquals } from "https://deno.land/std@0.116.0/testing/asserts.ts";
 import { clone } from "https://deno.land/x/object_clone@1.1.0/mod.ts";
 import { handler } from "./index.ts";
 import { baseRequest } from "../../lib/request.ts";
-import { headers, recordSaved } from "../../lib/responses.ts";
-import { key } from "../../lib/authenticate.ts";
+import {
+  headers,
+  recordSaved,
+  badRequest,
+} from "../../lib/responses.ts";
+import { key, keyName } from "../../lib/authenticate.ts";
 
-// Simple name and function, compact form, but not configurable
 Deno.test("should fail authentication", async () => {
   const expected = {
-    body: "🚫 No baby!",
+    body: {
+      message: "🚫 No baby!",
+    },
     headers,
     statusCode: 401,
   };
@@ -17,25 +22,43 @@ Deno.test("should fail authentication", async () => {
   assertEquals(response, expected);
 });
 
-Deno.test("should pass authentication and return message", async () => {
-  const expected: typeof recordSaved = clone(recordSaved);
-  expected.body = "✊ Photo saved";
+Deno.test("should pass authentication but fail valid payload", async () => {
+  const payload: typeof baseRequest = clone(baseRequest);
+  payload.headers[keyName] = key;
+  payload.body = "no object here!";
 
-  const requestWithAuthHeader: typeof baseRequest = clone(baseRequest);
-  requestWithAuthHeader.headers["x-api-key"] = key;
-  requestWithAuthHeader.body = JSON.stringify({
-    hello: "payload"
-  });
-
-  const response = await handler(requestWithAuthHeader);
-  assertEquals(response, expected);
+  const response = await handler(payload);
+  assertEquals(response, badRequest);
 });
 
-// Fully fledged test definition, longer form, but configurable (see below)
+// Cannot run this test without creating a specific import map pointing to a failing S3Bucket putObject method. Also would have to use a different deno test command to point to that import map. Not really what I want...
 // Deno.test({
-//   name: "hello world #2",
-//   fn: () => {
-//     const x = 1 + 2;
-//     assertEquals(x, 3);
+//   name: "should fail upload photo",
+//   async fn() {
+//     const payload: typeof baseRequest = clone(baseRequest);
+//     payload.headers[keyName] = key;
+//     payload.body = JSON.stringify({
+//       title: "",
+//       location: "",
+//       photo: "",
+//       description: "",
+//     });
+
+//     const response = await handler(payload);
+//     assertEquals(response, uploadFailed);
 //   },
 // });
+
+Deno.test("should upload photo and save a record", async () => {
+  const payload: typeof baseRequest = clone(baseRequest);
+  payload.headers[keyName] = key;
+  payload.body = JSON.stringify({
+    title: "",
+    location: "",
+    photo: "",
+    description: "",
+  });
+
+  const response = await handler(payload);
+  assertEquals(response, recordSaved);
+});

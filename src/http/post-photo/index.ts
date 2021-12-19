@@ -1,34 +1,31 @@
-import * as data from "https://registry.begin.com/begin-data@master/mod.ts";
-import { authenticate } from "../../lib/authenticate.ts";
-import {
-  recordSaved,
-} from "../../lib/responses.ts";
-import { request } from "../../lib/request.ts";
+import { authenticate, keyName } from "../../lib/authenticate.ts";
 import { validatePayload } from "../../lib/payload.ts";
+import { uploadPhoto } from "./upload-photo/upload-photo.ts";
+import { saveRecord } from "./save-record.ts";
+import { beginRequest } from "../../lib/request.ts";
+import {
+  responseTypes,
+  unauthorized,
+  badRequest,
+  uploadFailed,
+  recordSaved,
+  recordSaveFailed,
+} from "../../lib/responses.ts";
+import { S3Bucket } from "https://deno.land/x/s3@0.4.1/mod.ts";
 
-type payload = {
-  created: number;
-  key: string;
-  title: string;
-  location: string;
-  photo: string;
-  description: string;
-};
+export const handler = async (req: beginRequest) => {
+  const { body, headers } = req;
 
-export const handler = async (req: request) => {
-  return await authenticate(req, () => validatePayload(req.body, saveRecord));
-};
+  if (!authenticate(headers[keyName])) return unauthorized;
+  
+  if ((await validatePayload(body)) === responseTypes.invalidPayload)
+    return badRequest;
 
-const saveRecord = async (payload: payload) => {
-  const { title, location, photo, description } = payload;
-  await data.set({
-    table: "photos",
-    title,
-    location,
-    photo,
-    description,
-    created: Date.now(),
-  });
+  const { type } = await uploadPhoto(S3Bucket);
+  if (type === responseTypes.uploadPhotoFailed) return uploadFailed;
 
-  return recordSaved;
+  const { type: saveRecordResponse } = await saveRecord(body);
+  return saveRecordResponse !== responseTypes.dataSaveFailed
+    ? recordSaved
+    : recordSaveFailed;
 };
