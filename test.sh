@@ -1,1 +1,1 @@
-deno test --importmap --unstable src/importmap.json src -A
+deno test --importmap src/importmap.json src -A --unstable
