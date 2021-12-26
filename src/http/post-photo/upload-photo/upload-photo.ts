@@ -3,7 +3,7 @@ import { responseTypes } from "../../../lib/responses.ts";
 import { S3Bucket, PutObjectResponse } from "https://deno.land/x/s3@0.4.1/mod.ts";
 
 export const uploadPhoto = async () => {
-  const photoName = crypto.randomUUID();
+  const photoName = "hello";
 
   const bucket = new S3Bucket({
     accessKeyID: Deno.env.get("aws_access_key_id")!,
