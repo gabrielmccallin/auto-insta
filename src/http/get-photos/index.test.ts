@@ -1,4 +1,4 @@
-import { assertExists } from "https://deno.land/std@0.116.0/testing/asserts.ts";
+import { assertExists } from "https://deno.land/std@0.119.0/testing/asserts.ts";
 import { handler } from "./index.ts";
 import { S3Bucket } from "https://deno.land/x/s3@0.4.1/mod.ts";
 import * as sinon from "https://cdn.skypack.dev/sinon@12.0.1?dts";

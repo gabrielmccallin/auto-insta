@@ -25,11 +25,6 @@ export const uploadFailed = {
   }),
 };
 
-export const forbidden = new Response("🚫 Forbidden!", {
-  status: 403,
-  headers,
-});
-
 export const badRequest = {
   statusCode: 400,
   headers,

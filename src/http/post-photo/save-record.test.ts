@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.116.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.119.0/testing/asserts.ts";
 import { saveRecord } from "./save-record.ts";
 import { responseTypes } from "../../lib/responses.ts";
 import * as sinon from "https://cdn.skypack.dev/sinon@12.0.1?dts";

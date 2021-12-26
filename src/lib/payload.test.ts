@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.116.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.119.0/testing/asserts.ts";
 import { responseTypes } from "./responses.ts";
 import { validatePayload, expectedKeys } from "./payload.ts";
 

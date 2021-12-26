@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.116.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.119.0/testing/asserts.ts";
 import { clone } from "https://deno.land/x/object_clone@1.1.0/mod.ts";
 import { handler } from "./index.ts";
 import { baseRequest } from "../../lib/request.ts";
