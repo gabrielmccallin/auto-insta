@@ -1,6 +1,5 @@
 import { responseTypes } from "../../lib/responses.ts";
-
-import * as data from "https://registry.begin.com/begin-data@master/mod.ts";
+import { BeginData } from "./stubs/beginStub.ts";
 
 export type beginData = {
   title: string;
@@ -12,23 +11,24 @@ export type beginData = {
 export const saveRecord = async (payload: beginData) => {
   const { title, location, photo, description } = payload;
   try {
-      await data.set({
-        table: "photos",
-        title,
-        location,
-        photo,
-        description,
-        created: Date.now(),
-      });
+    const beginData = new BeginData();
+    await beginData.set({
+      table: "photos",
+      title,
+      location,
+      photo,
+      description,
+      created: Date.now(),
+    });
   } catch (error) {
-      return {
-          type: responseTypes.dataSaveFailed,
-          payload: error
-      }
+    return {
+      type: responseTypes.dataSaveFailed,
+      payload: error,
+    };
   }
 
   return {
-      type: responseTypes.success,
-      payload: "Data saved"
+    type: responseTypes.success,
+    payload: "Data saved",
   };
 };

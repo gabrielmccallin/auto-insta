@@ -36,14 +36,15 @@
             "type": "pwa-node",
             "request": "launch",
             "program": "${file}",
-            "cwd": "${workspaceFolder}/src",
+            "cwd": "${workspaceFolder}",
             "runtimeExecutable": "deno",
             "runtimeArgs": [
                 "test",
                 "--inspect-brk",
                 "-A",
                 "--import-map",
-                "importmap.json"
+                "src/importmap.json",
+                "src/"
             ],
             "attachSimplePort": 9229,
             "console": "integratedTerminal"
@@ -62,6 +63,21 @@
             ],
             "attachSimplePort": 9229,
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Deno test run", // manually created
+            "type": "pwa-node",
+            "request": "launch",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "deno",
+            "runtimeArgs": [
+                "test",
+                // "--inspect-brk",
+                "-A"
+            ],
+            "attachSimplePort": 9229,
+            // "console": "integratedTerminal"
         },
         {
             "name": "Launch via NPM",

@@ -1,6 +1,0 @@
-{
-    "imports": {
-        "https://deno.land/x/s3@0.4.1/mod.ts": "./http/post-photo/upload-photo/S3Bucket.ts",
-        "https://registry.begin.com/begin-data@master/mod.ts": "./http/post-photo/mocks/data.ts"
-    }
-}

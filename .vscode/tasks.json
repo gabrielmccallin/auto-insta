@@ -1,0 +1,46 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "deno",
+            "command": "test",
+            "problemMatcher": [
+                "$deno-test"
+            ],
+            "group": "test",
+            "label": "deno: test",
+            "args": [
+                "-A",
+                "${file}"
+            ]
+        },
+        {
+            "type": "deno",
+            "command": "test",
+            "problemMatcher": [
+                "$deno-test"
+            ],
+            "group": "test",
+            "label": "deno: test with import map",
+            "args": [
+                "-A",
+                "${file}",
+                "--import-map",
+                "src/importmap.json"
+            ]
+        },
+        {
+            "type": "deno",
+            "command": "test",
+            "problemMatcher": [
+                "$deno-test"
+            ],
+            "group": "test",
+            "label": "deno: test all",
+            "args": [
+                "-A",
+                "src/"
+            ]
+        }
+    ]
+}

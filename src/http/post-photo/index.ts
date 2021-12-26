@@ -11,7 +11,6 @@ import {
   recordSaved,
   recordSaveFailed,
 } from "../../lib/responses.ts";
-import { S3Bucket } from "https://deno.land/x/s3@0.4.1/mod.ts";
 
 export const handler = async (req: beginRequest) => {
   const { body, headers } = req;
@@ -21,7 +20,7 @@ export const handler = async (req: beginRequest) => {
   if ((await validatePayload(body)) === responseTypes.invalidPayload)
     return badRequest;
 
-  const { type } = await uploadPhoto(S3Bucket);
+  const { type } = await uploadPhoto();
   if (type === responseTypes.uploadPhotoFailed) return uploadFailed;
 
   const { type: saveRecordResponse } = await saveRecord(body);
