@@ -4,7 +4,7 @@
   "description": "save record, upload to insta",
   "scripts": {
     "start": "npx sandbox",
-    "test": "curl -fsSL https://deno.land/x/install/install.sh | sh && deno test -A src/"
+    "_test": "deno test -A src/"
   },
   "dependencies": {
     "@architect/sandbox": "^4.1.1"
