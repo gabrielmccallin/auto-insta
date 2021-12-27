@@ -4,7 +4,7 @@
   "description": "save record, upload to insta",
   "scripts": {
     "start": "npx sandbox",
-    "test": "apt-get install unzip && deno upgrade --version 1.17.1 && deno test -A src/"
+    "test": "uname -a && apt-get install unzip && deno upgrade --version 1.17.1 && deno test -A src/"
   },
   "dependencies": {
     "@architect/sandbox": "^4.1.1"
