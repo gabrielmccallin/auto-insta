@@ -4,7 +4,7 @@
   "description": "save record, upload to insta",
   "scripts": {
     "start": "npx sandbox",
-    "_test": "deno test -A src"
+    "test": "deno test -A --unstable src"
   },
   "dependencies": {
     "@architect/sandbox": "^4.1.1"
