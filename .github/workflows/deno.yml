@@ -48,5 +48,5 @@ jobs:
           git branch
           git fetch
           git checkout production
-          git rebase -Xtheirs main
+          git rebase -Xours main
           git push origin production --force
