@@ -2,6 +2,7 @@
 deno-hello
 
 @http
+get /photos
 post /photo
 
 @tables
