@@ -6,7 +6,7 @@ Deno.test("should return true", () => {
     [keyName]: key
   }
   const authenticated = authenticate(header[keyName]);
-  assertEquals(authenticated, false);
+  assertEquals(authenticated, true);
 });
 
 Deno.test("should return false", () => {
