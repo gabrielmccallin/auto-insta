@@ -45,6 +45,8 @@ jobs:
 
       - name: Production release
         run: |
+          git branch
+          git fetch
           git checkout production
           git rebase main
           git push origin production --force
