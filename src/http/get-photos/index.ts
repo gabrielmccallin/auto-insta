@@ -19,5 +19,5 @@ export const handler = async () => {
     photos.push(obj.key);
   }
 
-  return photos;
+  return "hello";
 };
