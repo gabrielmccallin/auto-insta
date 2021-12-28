@@ -36,3 +36,14 @@ jobs:
 
       - name: Run tests
         run: deno test -A --unstable src
+
+      - name: setup git config
+        run: |
+          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+
+      - name: commit
+        run: |
+          git commit -m "$GITHUB_RUN_NUMBER"
+          git push origin production
