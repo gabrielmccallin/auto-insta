@@ -1,8 +1,5 @@
 import "https://deno.land/x/dotenv/load.ts";
 import { S3Bucket } from "https://deno.land/x/s3@0.4.1/mod.ts";
-import {
-  success,
-} from "../../lib/responses.ts";
 
 export const handler = async () => {
   const bucket = new S3Bucket({
@@ -22,5 +19,5 @@ export const handler = async () => {
     photos.push(obj.key);
   }
 
-  return success;
+  return photos;
 };
