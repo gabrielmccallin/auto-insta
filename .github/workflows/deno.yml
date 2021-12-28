@@ -47,8 +47,6 @@ jobs:
         run: |
           git branch
           git fetch
-          git branch
           git checkout production
-          git pull
-          git rebase main
+          git rebase -Xtheirs main
           git push origin production --force
