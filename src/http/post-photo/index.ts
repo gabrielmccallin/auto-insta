@@ -15,6 +15,7 @@ import {
 export const handler = async (req: beginRequest) => {
   const { body, headers } = req;
 
+  console.log(headers);
   if (!authenticate(headers[keyName])) return unauthorized;
   
   if ((await validatePayload(body)) === responseTypes.invalidPayload)
