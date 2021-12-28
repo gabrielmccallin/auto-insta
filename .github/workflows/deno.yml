@@ -46,7 +46,7 @@ jobs:
       - name: Production release
         run: |
           git branch
-          git fetch
+          git fetch --unshallow
           git checkout production
           git merge main
           git push origin production --force
