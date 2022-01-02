@@ -41,8 +41,12 @@ const responseMessages = {
   },
 };
 
-export const respond = (code: responseCodes, context: Context) => {
+// deno-lint-ignore no-explicit-any
+export const respond = (code: responseCodes, context: Context, error?: any) => {
   const { message, status } = responseMessages[code];
   context.response.status = status;
+  if(error) {
+    context.response.body = error;
+  }
   context.response.body = message;
 };
