@@ -21,18 +21,16 @@ export const getPhotos = async (context: Context) => {
     endpointURL: "https://auto-insta.s3.eu-west-2.amazonaws.com",
   });
 
-  // let photos;
-  let uma;
+  let photos;
   try {
-    // const list = bucket.listAllObjects({
-    //   batchSize: 10,
-    // });
-    // photos = [];
-    // for await (const obj of list) {
-    //   photos.push(obj.key);
-    // }
+    const list = bucket.listAllObjects({
+      batchSize: 10,
+    });
+    photos = [];
+    for await (const obj of list) {
+      photos.push(obj.key);
+    }
 
-    uma = await bucket.getObject("newnewnew");
   } catch (_error) {
     return respond({
       code: responseCodes.getPhotosFailed,
@@ -44,6 +42,6 @@ export const getPhotos = async (context: Context) => {
   return respond({
     code: responseCodes.success,
     context,
-    message: JSON.stringify(uma?.body),
+    message: JSON.stringify(photos),
   });
 };

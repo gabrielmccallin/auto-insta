@@ -8,7 +8,7 @@ const stubPutObject  = sinon.stub(S3Bucket.prototype, "putObject");
 Deno.test("should upload photo", async () => {
   stubPutObject.resolves();
   
-  const photo = await Deno.readFile("me.png");
+  const photo = new Uint8Array();
   const { success } = await uploadPhoto("Uma", photo);
   
   assertEquals(success, true);
@@ -18,7 +18,7 @@ Deno.test("should upload photo", async () => {
 Deno.test("should fail upload photo", async () => {
   stubPutObject.rejects();
   
-  const photo = await Deno.readFile("me.png");
+  const photo = new Uint8Array();
   const { success } = await uploadPhoto("Uma", photo);
   
   assertEquals(success, false);

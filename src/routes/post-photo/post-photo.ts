@@ -26,9 +26,13 @@ export const photo = async (context: ContextWithUpload) => {
     return respond(responseCodes.invalidPayload, context);
   }
 
-  const fileContent = await Deno.readFile(files[0].filename as string);
+  let fileContent;
+  try {
+    fileContent = await Deno.readFile(files[0].filename as string);
+  } catch (_error) {
+    fileContent = new Uint8Array();
+  }
 
-  // const fileContent = files[0].content || new Uint8Array();
   const photoId = crypto.randomUUID();
   const { success } = await uploadPhoto(photoId, fileContent);
 

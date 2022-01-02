@@ -17,11 +17,22 @@ Deno.test("should respond with 201 Created", async () => {
       body: () => {
         return {
           value: {
-            photoId: "",
-            location: "",
-            description: "",
-            username: "",
-            password: ""
+            read: () => {
+              return {
+                fields: {
+                  photoId: "",
+                  location: "",
+                  description: "",
+                  username: "",
+                  password: "",
+                },
+                files: [
+                  {
+                    filename: "/var/folders/blah.jpg",
+                  },
+                ],
+              };
+            },
           },
         };
       },
@@ -30,7 +41,7 @@ Deno.test("should respond with 201 Created", async () => {
       get: () => {},
       set: () => {},
     },
-    uploadedFiles: await Deno.readFile("me.png")
+    uploadedFiles: new Uint8Array(),
   };
 
   sinon
