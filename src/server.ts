@@ -1,22 +1,19 @@
-import { serve } from "https://deno.land/std@0.119.0/http/server.ts";
-import { handler as photosList } from "./http/get-photos/index.ts";
+import { oak } from "./deps.ts";
+import { photo, ContextWithUpload } from "./routes/post-photo/post-photo.ts";
+import { getPhotos } from "./routes/get-photos/get-photos.ts";
 
-const handler = async (req: Request): Promise<Response> => {
-  console.log("Method:", req.method);
+const router = new oak.Router();
 
-  const url = new URL(req.url);
-  console.log("Path:", url.pathname);
-  console.log("Query parameters:", url.searchParams);
+router
+.post("/photo", async (context) => {
+  return await photo(context as ContextWithUpload);
+})
+.get("/photos", async (context) => {
+  return await getPhotos(context);
+});
 
-  console.log("Headers:", req.headers);
+const app = new oak.Application();
+app.use(router.routes());
+app.use(router.allowedMethods());
 
-  if (req.body) {
-    const body = await req.text();
-    console.log("Body:", body);
-  }
-
-  const list = await photosList();
-  return new Response(list.toString());
-};
-
-serve(handler);
+await app.listen({ port: 8000 });

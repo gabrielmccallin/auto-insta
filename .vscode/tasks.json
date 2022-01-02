@@ -8,7 +8,7 @@
                 "$deno-test"
             ],
             "group": "test",
-            "label": "deno: test",
+            "label": "deno test file",
             "args": [
                 "-A",
                 "${file}"
@@ -21,25 +21,36 @@
                 "$deno-test"
             ],
             "group": "test",
-            "label": "deno: test with import map",
+            "label": "deno test all",
             "args": [
                 "-A",
-                "${file}",
-                "--import-map",
-                "src/importmap.json"
+                "src/"
             ]
         },
         {
             "type": "deno",
-            "command": "test",
+            "command": "run",
             "problemMatcher": [
-                "$deno-test"
+                "$deno"
             ],
-            "group": "test",
-            "label": "deno: test all",
+            "label": "deno run",
             "args": [
                 "-A",
-                "src/"
+                "--watch",
+                "src/server.ts"
+            ]
+        },
+        {
+            "type": "deno",
+            "command": "run",
+            "problemMatcher": [
+                "$deno"
+            ],
+            "label": "deno run file",
+            "args": [
+                "-A",
+                "--watch",
+                "${file}"
             ]
         }
     ]
