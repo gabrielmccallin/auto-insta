@@ -7,12 +7,13 @@ export enum responseCodes {
   loginSuccess,
   invalidPayload,
   invalidFormData,
-  uploadPhotoFailed
+  uploadPhotoFailed,
 }
 
 const responseMessages = {
   [responseCodes.photoMetaDataFailed]: {
-    message: "Photo metadata was not saved due to an upstream issue or missing store configuration (check environment variables)",
+    message:
+      "Photo metadata was not saved due to an upstream issue or missing store configuration (check environment variables)",
     status: oak.Status.BadGateway,
   },
   [responseCodes.success]: {
@@ -45,8 +46,6 @@ const responseMessages = {
 export const respond = (code: responseCodes, context: Context, error?: any) => {
   const { message, status } = responseMessages[code];
   context.response.status = status;
-  if(error) {
-    context.response.body = error;
-  }
-  context.response.body = message;
+  const body = error || message;
+  context.response.body = body;
 };
