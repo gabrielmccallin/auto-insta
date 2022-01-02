@@ -11,7 +11,7 @@ export enum responseCodes {
 
 const responseMessages = {
   [responseCodes.photoMetaDataFailed]: {
-    message: "Photo metadata was not saved due to an upstream issue",
+    message: "Photo metadata was not saved due to an upstream issue or missing store configuration (check environment variables)",
     status: oak.Status.BadGateway,
   },
   [responseCodes.success]: {

@@ -44,6 +44,11 @@ Deno.test("should respond with 201 Created", async () => {
     uploadedFiles: new Uint8Array(),
   };
 
+  Deno.env.set(
+    "FIREBASE_CONFIG",
+    `{"apiKey": "","authDomain": "","projectId": "","storageBucket": "auto","messagingSenderId": "","appId": "","measurementId": ""}`
+  );
+
   sinon
     .stub(firebase, "signInWithEmailAndPassword")
     // deno-lint-ignore no-explicit-any

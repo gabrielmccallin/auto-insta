@@ -9,7 +9,8 @@ export type ContextWithUpload = Context & { uploadedFiles?: Uint8Array };
 
 export const photo = async (context: ContextWithUpload) => {
   const { cookies, request } = context;
-  const config = JSON.parse(Deno.env.get("FIREBASE_CONFIG") || "");
+  const configString = Deno.env.get("FIREBASE_CONFIG") || "[]";
+  const config = JSON.parse(configString);
 
   let parsed;
   let formData;

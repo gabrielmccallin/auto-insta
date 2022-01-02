@@ -69,7 +69,12 @@ export const repository = async ({
   username?: string;
   config: Record<never, never>;
 }) => {
-  !firebaseApp && (firebaseApp = firebase.initializeApp(config));
+  try {
+    !firebaseApp && (firebaseApp = firebase.initializeApp(config));
+  } catch (_error) {
+    return false;
+  }
+
   !auth && (auth = firebase.getAuth(firebaseApp));
   !db && (db = firebase.getFirestore(firebaseApp));
 
