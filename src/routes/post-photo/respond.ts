@@ -6,6 +6,7 @@ export enum responseCodes {
   loginFail,
   loginSuccess,
   invalidPayload,
+  invalidFormData,
   uploadPhotoFailed
 }
 
@@ -28,6 +29,10 @@ const responseMessages = {
   },
   [responseCodes.invalidPayload]: {
     message: "Invalid payload",
+    status: oak.Status.BadRequest,
+  },
+  [responseCodes.invalidFormData]: {
+    message: "Invalid form data",
     status: oak.Status.BadRequest,
   },
   [responseCodes.uploadPhotoFailed]: {

@@ -18,7 +18,7 @@ export const getPhotos = async (context: Context) => {
     secretKey: Deno.env.get("aws_secret_access_key")!,
     bucket: "auto-insta",
     region: "eu-west-2",
-    endpointURL: "https://auto-insta.s3.eu-west-2.amazonaws.com",
+    endpointURL: "https://auto-insta.s3.eu-west-2.amazonaws.com/",
   });
 
   let photos;
