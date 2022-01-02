@@ -20,7 +20,7 @@ export const photo = async (context: ContextWithUpload) => {
     formData = parsed.fields;
     files = parsed.files || [];
   } catch (_error) {
-    return respond(responseCodes.invalidFormData, context, JSON.stringify(parsed));
+    return respond(responseCodes.invalidFormData, context, "What is going on?");
   }
 
   if (formData && !validatePayload(formData)) {
