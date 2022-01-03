@@ -4,7 +4,7 @@ import {
 import { uploadPhoto } from "./upload-photo/upload-photo.ts";
 
 serve({
-  "/photo": async (request, params) => {
+  "/photo": async (request) => {
     const formData = await request.formData();
     const file = formData.get("file") as Blob;
 
