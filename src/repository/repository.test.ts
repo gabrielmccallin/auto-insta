@@ -21,7 +21,7 @@ const collectionStub = sinon.stub(firebase, "addDoc").resolves();
 Deno.test("should login into repository", async () => {
   firebaseStub.resolves({ user: "hello" } as any);
 
-  const success = await repository({
+  const [success] = await repository({
     cookies: { get: () => {}, set: () => {} },
     password: "",
     username: "",
@@ -36,7 +36,7 @@ Deno.test("should login into repository", async () => {
 Deno.test("should fail login to repository", async () => {
   firebaseStub.rejects();
 
-  const success = await repository({
+  const [success] = await repository({
     cookies: { get: () => {}, set: () => {} },
     password: "",
     username: "",
