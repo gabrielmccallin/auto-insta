@@ -17,6 +17,21 @@
             // "console": "integratedTerminal"
         },
         {
+            "name": "Deno run file",
+            "type": "pwa-node",
+            "request": "launch",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "deno",
+            "runtimeArgs": [
+                "run",
+                "--inspect-brk",
+                "-A"
+            ],
+            "attachSimplePort": 9229,
+            // "console": "integratedTerminal"
+        },
+        {
             "name": "Deno test",
             "type": "pwa-node",
             "request": "launch",
