@@ -18,6 +18,10 @@ import {
 
 import { authenticate, key } from "./authenticate/authenticate.ts";
 
+import { serve } from "https://deno.land/x/sift@0.4.2/mod.ts";
+
+import { getCookies, setCookie } from "https://deno.land/std/http/mod.ts";
+
 // ================================================
 
 export { Context } from "https://deno.land/x/oak@v10.1.0/mod.ts";
@@ -41,4 +45,13 @@ export const oak = {
 export const auth = {
   authenticate,
   key,
+};
+
+export const sift = {
+  serve,
+};
+
+export const std = {
+  getCookies,
+  setCookie,
 };

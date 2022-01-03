@@ -34,10 +34,12 @@ const signIn = async ({
   cookies: any;
   password?: string;
   username?: string;
-}) => {
-  const signedInUid = await cookies.get("LOGGED_IN_UID");
+}): Promise<[boolean, string]> => {
+  const signedInUid = cookies.LOGGED_IN_UID;
   const signedInUser = signedInUid != null ? users.get(signedInUid) : undefined;
+  
   if (!signedInUid || !signedInUser || !auth.currentUser) {
+    let userId = "";
     try {
       const creds = await firebase.signInWithEmailAndPassword(
         auth,
@@ -47,15 +49,17 @@ const signIn = async ({
       const { user } = creds;
       if (user) {
         users.set(user.uid, user);
-        cookies.set("LOGGED_IN_UID", user.uid);
+        // cookies.set("LOGGED_IN_UID", user.uid);
+        userId = user.uid;
       } else if (signedInUser && signedInUid.uid !== auth.currentUser?.uid) {
         firebase.updateCurrentUser(signedInUser);
       }
     } catch (_error) {
-      return false;
+      return [false, _error];
     }
+    return [true, userId];
   }
-  return true;
+  return [true, "no cookie set"];
 };
 
 export const repository = async ({
@@ -72,7 +76,7 @@ export const repository = async ({
   try {
     !firebaseApp && (firebaseApp = firebase.initializeApp(config));
   } catch (_error) {
-    return false;
+    return [false, _error];
   }
 
   !auth && (auth = firebase.getAuth(firebaseApp));

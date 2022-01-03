@@ -1,5 +1,3 @@
-import { oak, Context } from "../../deps.ts";
-
 export enum responseCodes {
   photoMetaDataFailed,
   success,
@@ -14,38 +12,37 @@ const responseMessages = {
   [responseCodes.photoMetaDataFailed]: {
     message:
       "Photo metadata was not saved due to an upstream issue or missing store configuration (check environment variables)",
-    status: oak.Status.BadGateway,
+    status: 502,
   },
   [responseCodes.success]: {
     message: "Photo metadata was saved to database",
-    status: oak.Status.Created,
+    status: 201,
   },
   [responseCodes.loginFail]: {
     message: "Repository login failed",
-    status: oak.Status.BadGateway,
+    status: 502,
   },
   [responseCodes.loginSuccess]: {
     message: "Repository login succeeded",
-    status: oak.Status.OK,
+    status: 200,
   },
   [responseCodes.invalidPayload]: {
     message: "Invalid payload",
-    status: oak.Status.BadRequest,
+    status: 400,
   },
   [responseCodes.invalidFormData]: {
     message: "Invalid form data",
-    status: oak.Status.BadRequest,
+    status: 400,
   },
   [responseCodes.uploadPhotoFailed]: {
     message: "Photo save failed",
-    status: oak.Status.BadGateway,
+    status: 502,
   },
 };
 
-// deno-lint-ignore no-explicit-any
-export const respond = (code: responseCodes, context: Context, error?: any) => {
+export const respond = (code: responseCodes) => {
   const { message, status } = responseMessages[code];
-  context.response.status = status;
-  const body = error || message;
-  context.response.body = body;
+  return new Response(message, {
+    status
+  })
 };
