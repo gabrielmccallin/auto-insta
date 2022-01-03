@@ -17,12 +17,15 @@ export const photo = async (context: ContextWithUpload) => {
   let files;
   let value;
   try {
-    value = await request.body().value;
-    parsed = value?.read();
+    value = request.body({ type: "form-data" }).value;
+    parsed = await value.read({ outPath: Deno.cwd() });
     formData = parsed.fields;
     files = parsed.files || [];
+    if(Deno.removeSync) {
+      Deno.removeSync(files[0]?.filename || "");
+    }
   } catch (_error) {
-    return respond(responseCodes.invalidFormData, context, JSON.stringify(_error.message));
+    return respond(responseCodes.invalidFormData, context, JSON.stringify(value));
   }
 
   if (formData && !validatePayload(formData)) {
