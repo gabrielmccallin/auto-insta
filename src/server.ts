@@ -1,10 +1,10 @@
 import {
   serve,
-} from "https://deno.land/x/sift@0.4.0/mod.ts";
+} from "https://deno.land/x/sift@0.4.2/mod.ts";
 import { uploadPhoto } from "./upload-photo/upload-photo.ts";
 
 serve({
-  "/photo": async (request) => {
+  "/photo": async (request: Request) => {
     const formData = await request.formData();
     const file = formData.get("file") as Blob;
 
