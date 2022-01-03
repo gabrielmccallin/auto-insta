@@ -17,12 +17,12 @@ export const photo = async (context: ContextWithUpload) => {
   let files;
   let value;
   try {
-    value = request.body({ type: "form-data" }).value;
-    parsed = await value.read();
+    value = await request.body().value;
+    parsed = value?.read();
     formData = parsed.fields;
     files = parsed.files || [];
   } catch (_error) {
-    return respond(responseCodes.invalidFormData, context, JSON.stringify(request));
+    return respond(responseCodes.invalidFormData, context, JSON.stringify(_error.message));
   }
 
   if (formData && !validatePayload(formData)) {
