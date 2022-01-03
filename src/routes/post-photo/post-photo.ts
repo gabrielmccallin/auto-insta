@@ -21,9 +21,6 @@ export const photo = async (context: ContextWithUpload) => {
     parsed = await value.read({ outPath: Deno.cwd() });
     formData = parsed.fields;
     files = parsed.files || [];
-    if(Deno.removeSync) {
-      Deno.removeSync(files[0]?.filename || "");
-    }
   } catch (_error) {
     return respond(responseCodes.invalidFormData, context, JSON.stringify(value));
   }
@@ -37,6 +34,12 @@ export const photo = async (context: ContextWithUpload) => {
     fileContent = await Deno.readFile(files[0].filename as string);
   } catch (_error) {
     fileContent = new Uint8Array();
+  }
+
+  try {
+      Deno.removeSync(files[0]?.filename || "");
+  } catch (_error) {
+    // removeSync doesn't exist in Deno Deploy
   }
 
   const photoId = crypto.randomUUID();
