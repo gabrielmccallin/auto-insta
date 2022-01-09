@@ -76,7 +76,7 @@ Deno.test({
 
     signInStub.resolves({ user: { uid: "uid" } } as any);
 
-    const [success, result] = await signIn({
+    const [_success, result] = await signIn({
       signedInUid: { uid: "" },
       username,
       password,
