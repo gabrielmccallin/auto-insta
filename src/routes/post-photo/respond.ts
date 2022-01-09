@@ -1,3 +1,5 @@
+import { setCookie } from "../../deps.ts";
+
 export enum responseCodes {
   photoMetaDataFailed,
   success,
@@ -8,41 +10,64 @@ export enum responseCodes {
   uploadPhotoFailed,
 }
 
-const responseMessages = {
+export const responseMessages = {
   [responseCodes.photoMetaDataFailed]: {
-    message:
+    defaultMessage:
       "Photo metadata was not saved due to an upstream issue or missing store configuration (check environment variables)",
     status: 502,
   },
   [responseCodes.success]: {
-    message: "Photo metadata was saved to database",
+    defaultMessage: "Photo was saved in storage, photo metadata was saved to database",
     status: 201,
   },
   [responseCodes.loginFail]: {
-    message: "Repository login failed",
+    defaultMessage: "Repository login failed",
     status: 502,
   },
   [responseCodes.loginSuccess]: {
-    message: "Repository login succeeded",
+    defaultMessage: "Repository login succeeded",
     status: 200,
   },
   [responseCodes.invalidPayload]: {
-    message: "Invalid payload",
+    defaultMessage: "Invalid payload",
     status: 400,
   },
   [responseCodes.invalidFormData]: {
-    message: "Invalid form data",
+    defaultMessage: "Invalid form data",
     status: 400,
   },
   [responseCodes.uploadPhotoFailed]: {
-    message: "Photo save failed",
+    defaultMessage: "Photo save failed",
     status: 502,
   },
 };
 
-export const respond = (code: responseCodes) => {
-  const { message, status } = responseMessages[code];
-  return new Response(message, {
-    status
-  })
+export const respond = ({
+  code,
+  message,
+  cookie,
+}: {
+  code: responseCodes;
+  message?: string;
+  cookie?: { name: string; value: string };
+}) => {
+  const { defaultMessage, status } = responseMessages[code];
+
+  const headers = new Headers();
+
+  if (cookie) {
+    const { name, value } = cookie;
+    setCookie(headers, {
+      name,
+      value,
+      httpOnly: true,
+      secure: true,
+      maxAge: 3,
+    });
+  }
+
+  return new Response(message || defaultMessage, {
+    status,
+    headers,
+  });
 };

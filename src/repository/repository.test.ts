@@ -1,10 +1,14 @@
 // deno-lint-ignore-file no-explicit-any
+import { assertEquals, assertExists, stub } from "../dev-deps.ts";
+import {
+  initialise,
+  signIn,
+  savePhotoMetaData,
+  auth
+} from "./repository.ts";
 import { firebase } from "../deps.ts";
-import { asserts, sinon } from "../dev-deps.ts";
-import { repository, savePhotoMetaData } from "./repository.ts";
-import "https://deno.land/x/dotenv@v3.1.0/load.ts";
 
-const firebaseStubConfig = {
+const config = {
   apiKey: "stub",
   authDomain: "stub",
   projectId: "stub",
@@ -14,62 +18,128 @@ const firebaseStubConfig = {
   measurementId: "stub",
 };
 
-const firebaseStub = sinon.stub(firebase, "signInWithEmailAndPassword");
+const username = "";
+const password = "";
 
-const collectionStub = sinon.stub(firebase, "addDoc").resolves();
+const signInStub = stub(firebase, "signInWithEmailAndPassword");
+const addDocStub = stub(firebase, "addDoc");
 
-Deno.test("should login into repository", async () => {
-  firebaseStub.resolves({ user: "hello" } as any);
+Deno.test({
+  name: "should initialise repository",
+  sanitizeResources: false,
+  sanitizeOps: false,
+  fn: () => {
+    const [success] = initialise(config);
 
-  const [success] = await repository({
-    cookies: { get: () => {}, set: () => {} },
-    password: "",
-    username: "",
-    config: firebaseStubConfig,
-  });
-
-  asserts.assertEquals(success, true);
-
-  firebaseStub.reset();
+    assertEquals(success, true);
+  },
 });
 
-Deno.test("should fail login to repository", async () => {
-  firebaseStub.rejects();
+Deno.test({
+  name: "should fail initialise repository",
+  sanitizeResources: false,
+  sanitizeOps: false,
+  fn: () => {
+    const [success, { error }] = initialise({});
 
-  const [success] = await repository({
-    cookies: { get: () => {}, set: () => {} },
-    password: "",
-    username: "",
-    config: firebaseStubConfig,
-  });
+    assertEquals(success, false);
+    assertExists(error);
+  },
+});
 
-  asserts.assertEquals(success, false);
+Deno.test({
+  name: "should login to repository",
+  sanitizeResources: false,
+  sanitizeOps: false,
+  fn: async () => {
+    const [intialiseSuccess] = initialise(config);
 
-  firebaseStub.reset();
+    signInStub.resolves({ user: { uid: "uid"} } as any);
+
+    const [success, { userId }] = await signIn({
+      signedInUid: { uid: "uid" },
+      username,
+      password,
+    });
+    assertEquals(userId, "uid");
+    assertEquals(intialiseSuccess, true);
+    assertEquals(success, true);
+  },
+});
+
+Deno.test({
+  name: "should not return userid on the second signIn",
+  sanitizeResources: false,
+  sanitizeOps: false,
+  fn: async () => {
+    initialise(config);
+
+    signInStub.resolves({ user: { uid: "uid" } } as any);
+
+    const [success, result] = await signIn({
+      signedInUid: { uid: "" },
+      username,
+      password,
+    });
+
+    auth.currentUser = { uid: "uid" };
+
+    const [secondSignInSuccess, secondSignInResult] = await signIn({
+      signedInUid: { uid: result?.userId || "" },
+      username,
+      password,
+    });
+
+    assertEquals(secondSignInResult?.userId, undefined);
+    assertEquals(secondSignInSuccess, true);
+  },
 });
 
 Deno.test({
   name: "should fail to save photo metadata in the repository",
+  sanitizeResources: false,
+  sanitizeOps: false,
   fn: async () => {
-    firebaseStub.resolves({ user: "hello" } as any);
-    
-    await repository({
-      cookies: { get: () => {}, set: () => {} },
-      password: "",
-      username: "",
-      config: firebaseStubConfig,
-    });
-    
-    collectionStub.rejects();
-    const saveResponse = await savePhotoMetaData({
+
+    signInStub.resolves({ user: { uid: "uid" } } as any);
+    addDocStub.rejects();
+
+    const [success, { error }] = await savePhotoMetaData({
       description: "",
       location: "",
-      photoId: ""
+      photoId: "",
+      config,
+      password: "",
+      signedInUid: { uid: "uid" },
+      username: "",
     });
 
-    asserts.assertEquals(saveResponse, false);
+    assertEquals(success, false);
+    assertExists(error?.message);
+  },
+});
 
-    firebaseStub.reset();
-    collectionStub.reset();
+Deno.test({
+  name: "should save photo document in the repository",
+  sanitizeResources: false,
+  sanitizeOps: false,
+  fn: async () => {
+
+    signInStub.resolves({ user: { uid: "uid" } } as any);
+    addDocStub.resolves();
+
+    const photoId = Date.now().toString();
+    const [success, { error }] = await savePhotoMetaData({
+      description: "all together now",
+      location: "all together now",
+      photoId,
+      config,
+      password,
+      signedInUid: { uid: "uid" },
+      username,
+    });
+
+    assertEquals(success, true);
+    assertEquals(error, undefined);
   },
 });
