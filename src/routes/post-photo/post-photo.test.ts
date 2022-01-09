@@ -6,6 +6,7 @@ import {responseMessages, responseCodes} from "./respond.ts"
 const stubPutObject = stub(S3Bucket.prototype, "putObject");
 const signInStub = stub(firebase, "signInWithEmailAndPassword");
 const addDocStub = stub(firebase, "addDoc");
+Deno.env.set("FIREBASE_CONFIG", '{"apiKey": "apiKey","authDomain": "","projectId": "","storageBucket": "","messagingSenderId": "","appId": "","measurementId": ""}');
 
 Deno.test({
   name: "should respond with 201 Created",
