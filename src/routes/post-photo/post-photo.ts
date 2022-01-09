@@ -29,8 +29,8 @@ export const photo = async (request: Request) => {
   const uploadPhotoOptions = {
     accessKeyID: Deno.env.get("aws_access_key_id")!,
     secretKey: Deno.env.get("aws_secret_access_key")!,
-    bucket: Deno.env.get("bucket")!,
-    region: Deno.env.get("region")!,
+    bucket: Deno.env.get("bucket") || "bucket",
+    region: Deno.env.get("region") || "eu-west-2",
     photoId,
     file: uint,
   };
